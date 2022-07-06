@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <Servo.h>
 
 #include "puzzle.hpp"
 
@@ -11,7 +12,6 @@ void setup() {
 // the loop function runs over and over again forever
 void loop() {
   handleInput();
-  puzzle->update();
 }
 
 void handleInput()
