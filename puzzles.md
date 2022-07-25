@@ -2,4 +2,4 @@
 
 ## Basic Puzzle
 
-Gombnyomásra kinyílik és becsukódik a zár. Servos zárat használ.
+Gombnyomásra kinyílik és becsukódik a zár. Servo-s zárat használ.

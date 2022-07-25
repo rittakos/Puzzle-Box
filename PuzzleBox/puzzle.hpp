@@ -1,6 +1,7 @@
 #include "lock.hpp"
 #include "button.hpp"
 #include "led.hpp"
+#include "pinModul.hpp"
 
 class Puzzle
 {
@@ -20,6 +21,7 @@ private:
   Lock* lock;
   Button* button;
   Led* led;
+  PinModul* pinModul;
 
   const int servoPin = 9;
   const int buttonPin = 8;
@@ -28,10 +30,12 @@ private:
 public:
   BasicPuzzle()
   {
+    Serial.begin(9600);
     lock = new ServoLock(servoPin, 90, 0);
     button = new Button(buttonPin);
     led = new Led(ledPin);
     led->off();
+    pinModul = new PinModul("3210");
     state = State::INITED;
   }
 
@@ -44,7 +48,8 @@ public:
 
   virtual void handleInputs() override
   {
-    if(button->isPressed())
+    pinModul->handleInput();
+    /*if(button->isPressed())
     {
       if(state == DONE)
       {
@@ -54,7 +59,7 @@ public:
         state = DONE;
       }
       delay(200);
-    }
+    }*/
   }
   
   virtual void reset() override
@@ -71,10 +76,15 @@ public:
 
   virtual void update() override
   {
+    if(pinModul->isSolved())
+      state = DONE;
+    else
+      state = INPROGRESS;
     if(state == DONE)
     {
       lock->open();
       led->on();
+      Serial.print("Done");
     }
   }
 };
